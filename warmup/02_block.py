@@ -13,7 +13,10 @@
 # 7. Найди заявку по телефону. Верни словарь заявки или None, если не нашлась.
 #    Цикл + ранний return.
 def find_by_phone(leads, phone):
-    pass
+    for lead in leads:
+        if lead.get("phone") == phone:
+            return lead
+    return None
 
 
 # 8. Проверь заявку перед сохранением. Верни СПИСОК ошибок (строк).
@@ -21,24 +24,46 @@ def find_by_phone(leads, phone):
 #    Поле отсутствует ИЛИ пустая строка / одни пробелы -> ошибка "нет поля <имя>".
 #    Всё в порядке -> пустой список.
 def validate(lead):
-    pass
+    errors = []
+    for req in ["name", "phone", "task"]:
+        if req not in lead or not lead[req].strip():
+            errors.append(f"нет поля {req}")
+    return errors
+          
+    
 
 
 # 9. Сгруппируй имена по типу заявки: {"bot": ["Anna", "Liga"], "parser": ["Ivan"]}.
 #    Порядок имён — как в исходном списке.
 def group_by_type(leads):
-    pass
+    leads_by_type = {}
+    for lead in leads:
+        lead_type = lead.get("type")
+        leads_by_type[lead_type] = leads_by_type.get(lead_type, []) + [lead.get("name")]
+    return leads_by_type
+
 
 
 # 10. Убери дубли по телефону: оставь ПЕРВУЮ заявку с каждым номером, порядок сохрани.
 #     Подсказка: множество (set) «уже видел».
 def dedupe(leads):
-    pass
+    seen_by_phone = set()
+    unique_leads = []
+
+    for lead in leads:
+        if lead.get("phone") not in seen_by_phone:
+            seen_by_phone.add(lead.get("phone"))
+            unique_leads.append(lead)
+    return unique_leads
 
 
 # 11. Сводка: верни {"total": всего, "urgent": срочных, "types": сколько РАЗНЫХ типов}.
 def summary(leads):
-    pass
+    total = len(leads)
+    urgent = [i for i in leads if i.get("urgent")].__len__()
+    types = len(set(lead.get("type") for lead in leads))
+
+    return {"total": total, "urgent": urgent, "types": types}
 
 
 if __name__ == "__main__":
