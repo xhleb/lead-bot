@@ -18,8 +18,7 @@ def is_even(n):
 # 2. Очисти телефон: убери пробелы, дефисы и скобки.
 #    "+371 (20) 123-456"  ->  "+37120123456"
 def clean_phone(phone):
-    return phone.replace(" ", "").replace("-", "").replace("(", "").replace(")","")
-
+    return "".join(c for c in phone if c.isdigit() or c[0] == "+") 
 
 # 3. Заявка — это словарь. Верни строку "Имя: задача".
 #    Если ключа "name" нет — вместо имени "Аноним".
@@ -41,7 +40,7 @@ def count_words(text):
 # 5. Дан список заявок. Верни список ИМЁН только срочных заявок (urgent == True).
 #    Одной строкой — через comprehension.
 def urgent_names(leads):
-    return [lead["name"] for lead in leads if lead.get("urgent") == True]
+    return [lead["name"] for lead in leads if lead.get("urgent")]
 
 
 # Бонус (необязательно): перепиши задачу 4 из диагностики без += и среза —
