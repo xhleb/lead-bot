@@ -9,7 +9,8 @@
 #     1234.5 -> "1 234.50 €"      15 -> "15.00 €"
 #     Подсказка: f"{x:,.2f}" даёт "1,234.50" — осталось заменить запятую.
 def format_price(x):
-    pass
+    
+    return f"{x:,.2f}".replace(",", " ") + " €"
 
 
 # 13. Текст уведомления менеджеру в Telegram (многострочная строка).
@@ -17,30 +18,39 @@ def format_price(x):
 #     Дальше строки "Имя: ...", "Телефон: ...", "Задача: ...". Строки разделены "\n".
 #     Подсказка: тернарный оператор из шпаргалки (раздел 5) + f-строки.
 def notify_text(lead):
-    pass
+    #hot = {"id": 7, "name": "Anna", "phone": "+37120000001", "task": "запись", "urgent": True}
+    #cold = {"id": 8, "name": "Ivan", "phone": "+37120000002", "task": "цены", "urgent": False}
 
+    header = f'🔥 Срочная заявка #{str(lead.get("id"))}' if lead.get("urgent") else f'Новая заявка #{str(lead.get("id"))}'
+ 
+    body = f"Имя: {lead.get('name', 'Аноним')}\nТелефон: {lead.get('phone', 'не указан')}\nЗадача: {lead.get('task', 'не указана')}"
+
+    return f"{header}\n{body}"
 
 # 14. Отсортируй заявки: сначала срочные, внутри — по имени по алфавиту.
 #     Верни НОВЫЙ список (исходный не меняй).
 #     Подсказка: key может вернуть кортеж — сравнение идёт по первому элементу,
 #     при равенстве — по второму. И помни: False < True.
 def sort_leads(leads):
-    pass
+    
+    return sorted(leads, key=lambda o: ( not o.get("urgent"), o.get("name", "")))
 
 
 # 15. Словарь {имя: телефон} одной строкой — dict comprehension.
 def phones_by_name(leads):
-    pass
+    return { lead.get("name"): lead.get("phone") for lead in leads if "name" in lead and "phone" in lead }
 
 
 # 16. а) У ВСЕХ заявок есть непустой телефон?   б) Есть ХОТЯ БЫ ОДНА срочная?
 #     Каждая — одна строка: all(...) / any(...).
 def all_have_phone(leads):
-    pass
+    
+    return all(lead.get("phone", "").strip() for lead in leads )
 
 
 def any_urgent(leads):
-    pass
+
+    return any(lead['urgent'] for lead in leads if 'urgent' in lead )
 
 
 if __name__ == "__main__":
