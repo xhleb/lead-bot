@@ -42,7 +42,8 @@ def classify(task):
 
 # 19. Срочная ли задача: есть ли в ней хоть одно слово из URGENT_WORDS (без учёта регистра).
 def is_urgent(task):
-    pass
+
+    return any( word in task.lower() for word in URGENT_WORDS )
 
 
 # 20. Конвейер: текст -> готовая заявка.
