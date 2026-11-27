@@ -24,7 +24,7 @@ def found_allergens(dish):
 #      Одна строка: comprehension с фильтром.
 #      Фишка: внутри можно вызвать свою же функцию из 19.1 — не пиши проверку заново.
 def safe_dishes(menu):
-    pass
+    return[ dish for dish in menu if not has_allergen(dish) ]
 
 
 if __name__ == "__main__":
