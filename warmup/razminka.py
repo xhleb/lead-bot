@@ -14,13 +14,14 @@ dish = "Салат с курицей, ОРЕХАМИ и сыром"
 #Если какая-то не вспоминается, сначала напиши её через обычный for (как делал на бумаге), потом сожми в одну строку.
 #Сравни свой код с 04_extra.py и напиши мне, где разошлось. Это займёт пару слов.
 
+TYPE_KEYWORDS = { "food" : ["pizza", "burger", "salad"],
+                    "drink" : ["coffee", "tea", "juice"] }
 
-def has_allergen(dish) :
-    return any(a in dish.lower() for a in ALLERGENS)
+task = "Нужен бот, который будет собирать данные о ценах на pizza и coffee"
 
-
-def found_allergens(dish):
-    return [a for a in ALLERGENS if a in dish.lower()]
-
-def safe_dishes(menu):
-    return [dish for dish in menu if not has_allergen(dish)]
+def classify(task):
+    task_l = task.lower()
+    for type_name, keywords in TYPE_KEYWORDS.items():
+        if any ( word in task_l for word in keywords):
+            return type_name
+    return "other"
