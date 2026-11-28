@@ -31,14 +31,26 @@ FIELDS = {"имя": "name", "телефон": "phone", "задача": "task"}
 #     - в значении тоже может быть ":" ("Задача: сайт: лендинг") — режь только по ПЕРВОМУ.
 #     Подсказка: help(str.split) — посмотри второй аргумент.
 def parse_message(text):
-    pass
+    message = {}
+    for part in text.strip().split("\n"):
+        if ":" in part:
+            label, value = part.split(":", 1)
+            label = label.strip().lower()
+            if label in FIELDS:
+                message[FIELDS[label]] = value.strip()
+    return message
+     
 
 
 # 18. Определи тип по тексту задачи: первый тип из TYPE_KEYWORDS, у которого
 #     ХОТЬ ОДНО слово встречается в задаче (без учёта регистра). Ничего не нашлось -> "other".
 def classify(task):
-    pass
-
+    task_lower = task.lower()
+    for type_name, keywords in TYPE_KEYWORDS.items():
+        if any( word in task_lower for word in keywords):
+            return type_name
+    return "other"
+   
 
 # 19. Срочная ли задача: есть ли в ней хоть одно слово из URGENT_WORDS (без учёта регистра).
 def is_urgent(task):
@@ -51,7 +63,16 @@ def is_urgent(task):
 #     верни None. Иначе верни словарь заявки + поля "id" (= lead_id), "type" (18), "urgent" (19).
 #     Вспомни validate из блока 2: по чему идёт проверка — по требованиям или по данным?
 def process(text, lead_id):
-    pass
+    lead = parse_message(text)
+    if not all(lead.get(field) and lead[field].strip() for field in FIELDS.values()):
+        return None
+    else:
+        res = dict(lead.items())
+        res["id"] = lead_id
+        res["type"] = classify(lead["task"])
+        res["urgent"] = is_urgent(lead["task"])
+        return res
+
 
 
 if __name__ == "__main__":
